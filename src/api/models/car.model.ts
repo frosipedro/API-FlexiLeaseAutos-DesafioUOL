@@ -5,8 +5,9 @@ export interface ICar {
   color: string;
   year: number;
   value_per_day: number;
-  accessories: [{ description: string }];
+  accessories: { description: string }[];
   number_of_passengers: number;
+  [key: string]: string | number | { description: string }[] | undefined;
 }
 
 const carSchema = new Schema<ICar>({

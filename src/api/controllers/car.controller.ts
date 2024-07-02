@@ -8,22 +8,21 @@ export class CarController {
 
   constructor() {
     this.carService = new CarService();
+    this.carMiddleware = new CarMiddleware();
   }
 
-  public createCar = async (req: request, res: response): Promise<response> => {
+  public createCar = async (req: typeof request, res: typeof response) => {
     try {
-      const verifyCar = await this.carMiddleware.createCar(req.body);
-      if (verifyCar) {
-        return res.status(400).json(verifyCar);
-      }
+      await this.carMiddleware.createCar(req.body);
+
       const car = await this.carService.createCar(req.body);
       res.status(201).json({ car });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    } catch (error: any) {
+      res.status(error.code).json({ error: error.message });
     }
   };
 
-  public getCars = async (req: request, res: response): Promise<response> => {
+  public getCars = async (req: typeof request, res: typeof response) => {
     try {
       const { query, page, limit } = req.query;
       const pageNumber = page ? parseInt(page as string, 10) : undefined;
@@ -32,75 +31,65 @@ export class CarController {
       const cars = await this.carService.getCars(
         query,
         pageNumber,
-        limitNumber
+        limitNumber,
       );
       res.status(200).json({ cars });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    } catch (error: any) {
+      res.status(error.code || 400).json({ error: error.message });
     }
   };
 
-  public deleteCar = async (req: request, res: response): Promise<response> => {
+  public deleteCar = async (req: typeof request, res: typeof response) => {
     try {
-      const id = req.params.id;
-      const verifyId = await this.carMiddleware.deleteCar(id);
-      if (verifyId) {
-        return res.status(404).json(verifyId);
-      }
+      await this.carMiddleware.deleteCar(req.params.carId);
 
-      await this.carService.deleteCar(id);
+      await this.carService.deleteCar(req.params.carId);
       res.status(204).json({ message: '' });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+    } catch (error: any) {
+      res.status(error.code || 400).json({ error: error.message });
     }
   };
 
-  public updateCar = async (req: request, res: response): Promise<response> => {
+  public updateCar = async (req: typeof request, res: typeof response) => {
     try {
-      const id = req.params.id;
-      const verifyData = await this.carMiddleware.updateCar(id, req.body);
-      if (verifyData === 'Car not found') {
-        res.status(404).json(verifyData);
-      }
-      if (verifyData) {
-        res.status(400).json(verifyData);
-      }
-      const car = await this.carService.updateCar(id, req.body);
+      await this.carMiddleware.updateCar(req.params.carId, req.body);
+
+      const car = await this.carService.updateCar(req.params.carId, req.body);
       res.status(200).json({ car });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    } catch (error: any) {
+      res.status(error.code || 400).json({ error: error.message });
     }
   };
 
-  public getCarById = async (
-    req: request,
-    res: response
-  ): Promise<response> => {
+  public getCarById = async (req: typeof request, res: typeof response) => {
     try {
-      const id = req.params.id;
-      const verifyId = await this.carMiddleware.getCarById(id);
-      if (verifyId) {
-        return res.status(404).json(verifyId);
-      }
+      await this.carMiddleware.getCarById(req.params.carId);
 
-      const car = await this.carService.getCarById(id);
+      const car = await this.carService.getCarById(req.params.carId);
       res.status(200).json({ car });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    } catch (error: any) {
+      res.status(error.code || 400).json({ error: error.message });
     }
   };
 
   public updateCarAcessory = async (
-    req: request,
-    res: response
-  ): Promise<response> => {
+    req: typeof request,
+    res: typeof response,
+  ) => {
     try {
-      const carId = req.params.id;
-      const acessoryId = req.params.id;
-      const car = await this.carService.updateCarAcessory(carId, acessoryId);
+      await this.carMiddleware.updateCarAcessory(
+        req.params.carId,
+        req.params.acessorieId,
+        req.body,
+      );
+
+      const car = await this.carService.updateCarAcessory(
+        req.params.carId,
+        req.params.acessorieId,
+      );
       res.status(200).json({ car });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    } catch (error: any) {
+      res.status(error.code || 400).json({ error: error.message });
     }
   };
 }

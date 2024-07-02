@@ -12,19 +12,19 @@ interface PaginatedCars {
 }
 
 export class CarService {
-  public async createCar(carParams: ICar): Promise<response> {
+  public async createCar(carParams: ICar) {
     try {
       const car = await Car.create(carParams);
       return { car };
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
 
   public async getCars(
-    query,
+    query: any,
     page?: number,
-    limit?: number
+    limit?: number,
   ): Promise<PaginatedCars> {
     try {
       const pageNumber = page ? page : 1;
@@ -50,7 +50,7 @@ export class CarService {
         offset: skip,
         offsets,
       };
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
@@ -58,16 +58,18 @@ export class CarService {
   public async deleteCar(id: string): Promise<void> {
     try {
       await Car.findByIdAndDelete(id);
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
 
   public async updateCar(id: string, carParams: any): Promise<{ car: any }> {
     try {
-      const car = await Car.findByIdAndUpdate(id, carParams, { new: true });
+      const car = await Car.findByIdAndUpdate(id, carParams, {
+        new: true,
+      });
       return { car };
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
@@ -76,23 +78,23 @@ export class CarService {
     try {
       const car = await Car.findById(id);
       return { car };
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
 
   public async updateCarAcessory(
     carId: string,
-    acessoryId: string
+    acessoryId: string,
   ): Promise<{ car: any }> {
     try {
       const car = await Car.findByIdAndUpdate(
         carId,
         { $push: { acessories: acessoryId } },
-        { new: true }
+        { new: true },
       );
       return { car };
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }

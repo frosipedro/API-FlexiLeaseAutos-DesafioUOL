@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import Car from '../api/models/car.model';
-import Booking from '../api/models/booking.model';
+import Reserve from '../api/models/reserve.model';
 import User from '../api/models/user.model';
 
 export class Database {
@@ -14,8 +14,8 @@ export class Database {
       port: 3306,
       username: 'root',
       password: 'root',
-      database: 'FlexiLeaseAutos',
-      entities: [Car, Booking, User],
+      database: './FlexiLeaseAutos',
+      entities: [Car, Reserve, User],
       synchronize: true,
     });
   }
