@@ -1,6 +1,6 @@
-import { request, response } from 'express';
-import { CarService } from '../services/car.service';
-import { CarMiddleware } from '../middlewares/car.middleware';
+import { CarService } from '../cars/car.service';
+import { CarMiddleware } from '../cars/car.middleware';
+import { Request, Response } from 'express';
 
 export class CarController {
   private carService: CarService;
@@ -11,18 +11,18 @@ export class CarController {
     this.carMiddleware = new CarMiddleware();
   }
 
-  public createCar = async (req: typeof request, res: typeof response) => {
+  public createCar = async (req: Request, res: Response): Promise<void> => {
     try {
       await this.carMiddleware.createCar(req.body);
 
       const car = await this.carService.createCar(req.body);
-      res.status(201).json({ car });
+      res.status(201).json(car);
     } catch (error: any) {
       res.status(error.code).json({ error: error.message });
     }
   };
 
-  public getCars = async (req: typeof request, res: typeof response) => {
+  public getCars = async (req: Request, res: Response): Promise<void> => {
     try {
       const { query, page, limit } = req.query;
       const pageNumber = page ? parseInt(page as string, 10) : undefined;
@@ -39,7 +39,7 @@ export class CarController {
     }
   };
 
-  public deleteCar = async (req: typeof request, res: typeof response) => {
+  public deleteCar = async (req: Request, res: Response): Promise<void> => {
     try {
       await this.carMiddleware.deleteCar(req.params.carId);
 
@@ -50,7 +50,7 @@ export class CarController {
     }
   };
 
-  public updateCar = async (req: typeof request, res: typeof response) => {
+  public updateCar = async (req: Request, res: Response): Promise<void> => {
     try {
       await this.carMiddleware.updateCar(req.params.carId, req.body);
 
@@ -61,7 +61,7 @@ export class CarController {
     }
   };
 
-  public getCarById = async (req: typeof request, res: typeof response) => {
+  public getCarById = async (req: Request, res: Response): Promise<void> => {
     try {
       await this.carMiddleware.getCarById(req.params.carId);
 
@@ -73,9 +73,9 @@ export class CarController {
   };
 
   public updateCarAcessory = async (
-    req: typeof request,
-    res: typeof response,
-  ) => {
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     try {
       await this.carMiddleware.updateCarAcessory(
         req.params.carId,

@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { ReserveController } from '../api/controllers/reserve.controller';
+import { ReserveController } from '../modules/reserves/reserve.controller';
 
 const reserveRoutes = Router();
 const reserveController = new ReserveController();
 
-reserveRoutes.post('/reserve', reserveController.createReserve);
-reserveRoutes.get('/reserve', reserveController.getReserves);
-reserveRoutes.get('/reserve/:reserveId', reserveController.getReserveById);
-reserveRoutes.put('/reserve/:reserveId', reserveController.updateReserve);
-reserveRoutes.delete('/reserve/:reserveId', reserveController.deleteReserve);
+reserveRoutes.post('/', reserveController.createReserve);
+reserveRoutes.get('/', reserveController.getReserves);
+reserveRoutes.get('/:reserveId', reserveController.getReserveById);
+reserveRoutes.put('/:reserveId', reserveController.updateReserve);
+reserveRoutes.delete('/:reserveId', reserveController.deleteReserve);
 
 export default reserveRoutes;

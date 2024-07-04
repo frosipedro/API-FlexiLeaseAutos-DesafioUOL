@@ -1,6 +1,13 @@
 import { Schema, model, Types } from 'mongoose';
 
-export interface IReserve {
+export interface IReserveUserCreate extends Document {
+  id_user: Types.ObjectId | string;
+  start_date: Date;
+  end_date: Date;
+  id_car: Types.ObjectId;
+}
+
+export interface IReserve extends Document {
   id_user: Types.ObjectId | string;
   start_date: Date;
   end_date: Date;
@@ -15,6 +22,13 @@ const reserveSchema = new Schema<IReserve>({
   id_car: { type: Schema.Types.ObjectId, ref: 'Car', required: true },
   final_value: { type: Number, required: true },
 });
+
+reserveSchema.index(
+  { id_car: 1, start_date: 1, end_date: 1 },
+  { unique: true },
+);
+
+reserveSchema.index({ id_user: 1, start_date: 1, end_date: 1 });
 
 const Reserve = model<IReserve>('Reserve', reserveSchema);
 

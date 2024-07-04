@@ -1,6 +1,7 @@
-import { Schema, model } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
 
-export interface IUser {
+export interface IUser extends Document {
   name: string;
   cpf: string;
   birth: string;
@@ -19,7 +20,7 @@ const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   cpf: { type: String, required: true },
   birth: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   cep: { type: String, required: true },
   qualified: { type: String, required: true },
@@ -28,6 +29,16 @@ const userSchema = new Schema<IUser>({
   neighborhood: { type: String, required: true },
   locality: { type: String, required: true },
   uf: { type: String, required: true },
+});
+
+userSchema.pre<IUser>('save', async function (next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 const User = model<IUser>('User', userSchema);

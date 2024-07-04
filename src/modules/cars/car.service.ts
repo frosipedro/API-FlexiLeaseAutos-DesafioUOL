@@ -1,6 +1,6 @@
-import { response } from 'express';
-import Car from '../models/car.model';
-import { ICar } from '../models/car.model';
+import AppError from '../../utils/AppError';
+import Car from '../cars/car.model';
+import { ICar } from '../cars/car.model';
 
 interface PaginatedCars {
   cars: ICar[];
@@ -12,12 +12,13 @@ interface PaginatedCars {
 }
 
 export class CarService {
-  public async createCar(carParams: ICar) {
+  public async createCar(carParams: ICar): Promise<ICar> {
     try {
-      const car = await Car.create(carParams);
-      return { car };
+      const car = new Car(carParams);
+      await car.save();
+      return car;
     } catch (error: any) {
-      throw error;
+      throw new AppError(400, error.message);
     }
   }
 
@@ -51,7 +52,7 @@ export class CarService {
         offsets,
       };
     } catch (error: any) {
-      throw error;
+      throw new AppError(400, error.message);
     }
   }
 
@@ -59,34 +60,37 @@ export class CarService {
     try {
       await Car.findByIdAndDelete(id);
     } catch (error: any) {
-      throw error;
+      throw new AppError(400, error.message);
     }
   }
 
-  public async updateCar(id: string, carParams: any): Promise<{ car: any }> {
+  public async updateCar(
+    id: string,
+    carParams: ICar,
+  ): Promise<{ car: ICar | null }> {
     try {
       const car = await Car.findByIdAndUpdate(id, carParams, {
         new: true,
       });
       return { car };
     } catch (error: any) {
-      throw error;
+      throw new AppError(400, error.message);
     }
   }
 
-  public async getCarById(id: string): Promise<{ car: any }> {
+  public async getCarById(id: string): Promise<{ car: ICar | null }> {
     try {
       const car = await Car.findById(id);
       return { car };
     } catch (error: any) {
-      throw error;
+      throw new AppError(400, error.message);
     }
   }
 
   public async updateCarAcessory(
     carId: string,
     acessoryId: string,
-  ): Promise<{ car: any }> {
+  ): Promise<{ car: ICar | null }> {
     try {
       const car = await Car.findByIdAndUpdate(
         carId,
@@ -95,7 +99,7 @@ export class CarService {
       );
       return { car };
     } catch (error: any) {
-      throw error;
+      throw new AppError(400, error.message);
     }
   }
 }

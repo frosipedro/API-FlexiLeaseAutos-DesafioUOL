@@ -23,7 +23,7 @@ class AppError extends Error {
       case 500:
         return 500; // Internal Server Error
       default:
-        return 500; // Default to Internal Server Error
+        return 500; // Internal Server Error
     }
   }
 }

@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import { CarController } from '../api/controllers/car.controller';
+import { CarController } from '../modules/cars/car.controller';
 
 const carRoutes = Router();
 const carController = new CarController();
 
-carRoutes.post('/car', carController.createCar);
-carRoutes.get('/car', carController.getCars);
-carRoutes.delete('/car/:carId', carController.deleteCar);
-carRoutes.put('/car/:carId', carController.updateCar);
-carRoutes.get('/car/:carId', carController.getCarById);
+carRoutes.post('/', carController.createCar);
+carRoutes.get('/', carController.getCars);
+carRoutes.delete('/:carId', carController.deleteCar);
+carRoutes.put('/:carId', carController.updateCar);
+carRoutes.get('/:carId', carController.getCarById);
 carRoutes.patch(
-  '/car/:carId/acessories/:acessorieId',
+  '/:carId/acessories/:acessorieId',
   carController.updateCarAcessory,
 );
 

@@ -1,6 +1,6 @@
-import Car from '../models/car.model';
-import { ICar } from '../models/car.model';
-import AppError from '../utils/AppError';
+import AppError from '../../utils/AppError';
+import Car from '../cars/car.model';
+import { ICar } from '../cars/car.model';
 
 export class CarMiddleware {
   public async createCar(carData: ICar): Promise<any> {
@@ -39,7 +39,7 @@ export class CarMiddleware {
     }
   }
 
-  public async updateCar(id: any, carData: ICar) {
+  public async updateCar(id: any, carData: ICar): Promise<any> {
     const findById = await Car.findById(id);
     if (!findById) {
       throw new AppError(404, 'Car not found');
@@ -73,14 +73,18 @@ export class CarMiddleware {
     }
   }
 
-  public async getCarById(id: any) {
+  public async getCarById(id: any): Promise<any> {
     const findById = await Car.findById(id);
     if (!findById) {
       throw new AppError(404, 'Car not found');
     }
   }
 
-  public async updateCarAcessory(carId: any, accessory: any, body: any) {
+  public async updateCarAcessory(
+    carId: any,
+    accessory: any,
+    body: any,
+  ): Promise<any> {
     const findById = await Car.findById(carId);
     if (!findById) {
       throw new AppError(404, 'Car not found');
