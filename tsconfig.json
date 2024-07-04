@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "outDir": "./src/database/migrations",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "target": "es6"
+  }
+}
