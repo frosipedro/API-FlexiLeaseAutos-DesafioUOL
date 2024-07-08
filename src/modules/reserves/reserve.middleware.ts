@@ -3,13 +3,12 @@ import { ICar } from '../cars/car.model';
 import Reserve from '../reserves/reserve.model';
 import { IReserveUserCreate } from '../reserves/reserve.model';
 import { IUser } from '../users/user.model';
-import { formatDateToString } from '../../utils/dateConverter';
 
 export class ReserveMiddleware {
   public async createReserve(
-    reserveData: IReserveUserCreate,
-    carData: ICar,
-    userData: IUser,
+    reserveData: any,
+    carData: any,
+    userData: any,
   ): Promise<any> {
     if (!userData.qualified) {
       throw new AppError(
@@ -45,13 +44,14 @@ export class ReserveMiddleware {
       );
     }
 
-    let startDate = formatDateToString(reserveData.start_date);
-    let endDate = formatDateToString(reserveData.end_date);
-    const reserveNumOfDays = Math.ceil(
-      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
-    );
+    let startDate = new Date(reserveData.start_date);
+    let endDate = new Date(reserveData.end_date);
+    let timeDifference = endDate.getDate() - startDate.getDate();
+    let reserveNumOfDays = timeDifference / (1000 * 3600 * 24);
+    reserveNumOfDays = Math.ceil(reserveNumOfDays);
 
-    const value_per_day = carData.value_per_day;
+    const value_per_day = carData.car.value_per_day;
+
     const final_value = value_per_day * reserveNumOfDays;
 
     const reserveCompleteData = {
@@ -67,7 +67,7 @@ export class ReserveMiddleware {
       'final_value',
     ];
     for (const field of requiredFields) {
-      if (!reserveData[field]) {
+      if (!reserveCompleteData[field]) {
         throw new AppError(400, `Field '${field}' is required`);
       }
     }
@@ -83,29 +83,11 @@ export class ReserveMiddleware {
   }
 
   public async updateReserve(
-    id: any,
-    reserveData: IReserveUserCreate,
-    carData: ICar,
-    userData: IUser,
+    id: string,
+    reserveData: any,
+    carData: any,
+    userData: any,
   ): Promise<any> {
-    const findById = await Reserve.findById(id);
-    if (!findById) {
-      throw new AppError(404, 'Reserva não encontrada');
-    }
-
-    const requiredFields = [
-      'id_user',
-      'start_date',
-      'end_date',
-      'id_car',
-      'final_value',
-    ];
-    for (const field of requiredFields) {
-      if (!reserveData[field]) {
-        throw new AppError(400, `Field '${field}' is required`);
-      }
-    }
-
     if (!userData.qualified) {
       throw new AppError(
         400,
@@ -140,18 +122,34 @@ export class ReserveMiddleware {
       );
     }
 
-    const reserveNumOfDays = Math.ceil(
-      (new Date(reserveData.end_date).getTime() -
-        new Date(reserveData.start_date).getTime()) /
-        (1000 * 60 * 60 * 24),
-    );
+    let startDate = new Date(reserveData.start_date);
+    let endDate = new Date(reserveData.end_date);
+    let timeDifference = endDate.getDate() - startDate.getDate();
+    let reserveNumOfDays = timeDifference / (1000 * 3600 * 24);
+    reserveNumOfDays = Math.ceil(reserveNumOfDays);
 
-    const value_per_day = carData.value_per_day;
+    const value_per_day = carData.car.value_per_day;
+
     const final_value = value_per_day * reserveNumOfDays;
+
     const reserveCompleteData = {
       ...reserveData,
       final_value,
     };
+
+    const requiredFields = [
+      'id_user',
+      'start_date',
+      'end_date',
+      'id_car',
+      'final_value',
+    ];
+    for (const field of requiredFields) {
+      if (!reserveCompleteData[field]) {
+        throw new AppError(400, `Field '${field}' is required`);
+      }
+    }
+
     return reserveCompleteData;
   }
 
