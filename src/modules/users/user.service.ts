@@ -66,7 +66,7 @@ export class UserService {
     }
   }
 
-  public async updateUser(id: string, userData: IUser): Promise<IUser> {
+  public async updateUser(id: string, userData: IUser): Promise<any> {
     try {
       const user = await User.findByIdAndUpdate(id, userData, { new: true });
       return user;
@@ -75,7 +75,7 @@ export class UserService {
     }
   }
 
-  public async getUserById(id: string): Promise<IUser> {
+  public async getUserById(id: string): Promise<any> {
     try {
       const user = await User.findById(id);
       return user;

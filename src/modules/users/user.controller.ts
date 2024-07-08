@@ -18,8 +18,8 @@ export class UserController {
 
       const user = await this.userService.createUser(formatedCEP);
       res.status(201).json({ user });
-    } catch (error) {
-      res.status(error.code).json({ error: error.message });
+    } catch (error: any) {
+      res.status(error.code).json(error.AppErrorToJSON());
     }
   };
 
@@ -36,7 +36,7 @@ export class UserController {
       );
       res.status(200).json({ users });
     } catch (error: any) {
-      res.status(error.code || 400).json({ error: error.message });
+      res.status(error.code || 400).json(error.AppErrorToJSON());
     }
   };
 
@@ -47,7 +47,7 @@ export class UserController {
       await this.userService.deleteUser(req.params.userId);
       res.status(204).json({ message: '' });
     } catch (error: any) {
-      res.status(error.code || 400).json({ error: error.message });
+      res.status(error.code || 400).json(error.AppErrorToJSON());
     }
   };
 
@@ -61,7 +61,7 @@ export class UserController {
       );
       res.status(200).json({ user });
     } catch (error: any) {
-      res.status(error.code || 400).json({ error: error.message });
+      res.status(error.code || 400).json(error.AppErrorToJSON());
     }
   };
 
@@ -72,7 +72,7 @@ export class UserController {
       const user = await this.userService.getUserById(req.params.userId);
       res.status(200).json({ user });
     } catch (error: any) {
-      res.status(error.code || 400).json({ error: error.message });
+      res.status(error.code || 400).json(error.AppErrorToJSON());
     }
   };
 }

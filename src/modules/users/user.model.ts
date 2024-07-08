@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 export interface IUser extends Document {
   name: string;
   cpf: string;
-  birth: string;
+  birth: Date;
   email: string;
   password: string;
   cep: string;
@@ -14,12 +14,13 @@ export interface IUser extends Document {
   neighborhood: string;
   locality: string;
   uf: string;
+  [key: string]: any;
 }
 
 const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   cpf: { type: String, required: true },
-  birth: { type: String, required: true },
+  birth: { type: Date, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   cep: { type: String, required: true },
@@ -39,6 +40,13 @@ userSchema.pre<IUser>('save', async function (next) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
+});
+
+userSchema.set('toJSON', {
+  transform: (document: any, returnedObject: any) => {
+    delete returnedObject.__v;
+    return returnedObject;
+  },
 });
 
 const User = model<IUser>('User', userSchema);

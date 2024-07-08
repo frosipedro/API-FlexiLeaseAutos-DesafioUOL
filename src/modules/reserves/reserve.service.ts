@@ -59,7 +59,7 @@ export class ReserveService {
     }
   }
 
-  public async getReserveById(id: string): Promise<IReserve> {
+  public async getReserveById(id: string): Promise<any> {
     try {
       const reserve = await Reserve.findById(id);
       return reserve;

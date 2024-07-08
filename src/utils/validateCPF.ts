@@ -1,30 +1,22 @@
-export function validateCPF(cpf: string): boolean {
-  cpf = cpf.replace(/[^\d]/g, '');
-
-  if (cpf.length !== 11) {
+export function validateCPF(value: string): boolean {
+  if (typeof value !== 'string') {
     return false;
   }
 
-  if (/^(\d)\1+$/.test(cpf)) {
+  value = value.replace(/[^\d]+/g, '');
+
+  if (value.length !== 11 || !!value.match(/(\d)\1{10}/)) {
     return false;
   }
 
-  const validateDigit = (
-    cpf: string,
-    factor: number,
-    digitPosition: number,
-  ): boolean => {
-    let total = 0;
-    for (let i = 0; i < factor - 1; i++) {
-      total += parseInt(cpf[i]) * (factor - i);
-    }
-    const remainder = total % 11;
-    const calculatedDigit = remainder < 2 ? 0 : 11 - remainder;
-    return calculatedDigit === parseInt(cpf[digitPosition]);
-  };
+  const values = value.split('').map(el => +el);
+  const rest = (count: number) =>
+    ((values
+      .slice(0, count - 12)
+      .reduce((soma, el, index) => soma + el * (count - index), 0) *
+      10) %
+      11) %
+    10;
 
-  const isFirstDigitValid = validateDigit(cpf, 10, 9);
-  const isSecondDigitValid = validateDigit(cpf, 11, 10);
-
-  return isFirstDigitValid && isSecondDigitValid;
+  return rest(10) === values[9] && rest(11) === values[10];
 }

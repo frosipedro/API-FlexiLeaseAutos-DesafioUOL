@@ -11,6 +11,7 @@ export interface ICar extends Document {
   value_per_day: number;
   accessories: Acessory[];
   number_of_passengers: number;
+  [key: string]: any;
 }
 
 const acessorySchema = new Schema<Acessory>({

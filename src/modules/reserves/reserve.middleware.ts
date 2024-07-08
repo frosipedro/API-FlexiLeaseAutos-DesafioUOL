@@ -7,8 +7,8 @@ import { IUser } from '../users/user.model';
 export class ReserveMiddleware {
   public async createReserve(
     reserveData: IReserveUserCreate,
-    carData: Partial<ICar>,
-    userData: Partial<IUser>,
+    carData: ICar,
+    userData: IUser,
   ): Promise<IReserve> {
     const requiredFields = [
       'id_user',
@@ -62,7 +62,9 @@ export class ReserveMiddleware {
         new Date(reserveData.start_date).getTime()) /
         (1000 * 60 * 60 * 24),
     );
-    const final_value = carData.value_per_day * reserveNumOfDays;
+
+    const value_per_day = carData.value_per_day;
+    const final_value = value_per_day * reserveNumOfDays;
     const reserveCompleteData = {
       ...reserveData,
       final_value,
@@ -80,8 +82,8 @@ export class ReserveMiddleware {
   public async updateReserve(
     id: any,
     reserveData: IReserveUserCreate,
-    carData: Partial<ICar>,
-    userData: Partial<IUser>,
+    carData: ICar,
+    userData: IUser,
   ): Promise<IReserve> {
     const findById = await Reserve.findById(id);
     if (!findById) {
@@ -140,7 +142,9 @@ export class ReserveMiddleware {
         new Date(reserveData.start_date).getTime()) /
         (1000 * 60 * 60 * 24),
     );
-    const final_value = carData.value_per_day * reserveNumOfDays;
+
+    const value_per_day = carData.value_per_day;
+    const final_value = value_per_day * reserveNumOfDays;
     const reserveCompleteData = {
       ...reserveData,
       final_value,

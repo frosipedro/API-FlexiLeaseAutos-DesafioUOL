@@ -1,6 +1,6 @@
 class AppError extends Error {
   public readonly code: number;
-  public readonly status: number;
+  public readonly status: string;
   public readonly message: string;
 
   constructor(code: number, message: string) {
@@ -10,21 +10,29 @@ class AppError extends Error {
     this.message = message;
   }
 
-  private getStatusFromCode(code: number): number {
+  private getStatusFromCode(code: number): string {
     switch (code) {
       case 400:
-        return 400; // Bad Request
+        return 'Bad Request';
       case 401:
-        return 401; // Unauthorized
+        return 'Unauthorized';
       case 403:
-        return 403; // Forbidden
+        return 'Forbidden';
       case 404:
-        return 404; // Not Found
+        return 'Not Found';
       case 500:
-        return 500; // Internal Server Error
+        return 'Internal Server Error';
       default:
-        return 500; // Internal Server Error
+        return 'Internal Server Error';
     }
+  }
+
+  public AppErrorToJSON(): { code: number; status: string; message: string } {
+    return {
+      code: this.code,
+      status: this.status,
+      message: this.message,
+    };
   }
 }
 

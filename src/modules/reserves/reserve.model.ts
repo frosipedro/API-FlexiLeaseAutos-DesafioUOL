@@ -5,6 +5,7 @@ export interface IReserveUserCreate extends Document {
   start_date: Date;
   end_date: Date;
   id_car: Types.ObjectId;
+  [key: string]: any;
 }
 
 export interface IReserve extends Document {
@@ -13,6 +14,7 @@ export interface IReserve extends Document {
   end_date: Date;
   id_car: Types.ObjectId;
   final_value: number;
+  [key: string]: any;
 }
 
 const reserveSchema = new Schema<IReserve>({

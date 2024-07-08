@@ -8,7 +8,7 @@ import { validateEmail } from '../../utils/validateEmail';
 interface IUserBeforeFormatedCEP extends Document {
   name: string;
   cpf: string;
-  birth: string;
+  birth: Date;
   email: string;
   password: string;
   cep: string;
@@ -58,24 +58,24 @@ export class UserMiddleware {
       ];
       for (const field of requiredFields) {
         if (!userData[field]) {
-          throw new AppError(400, `${field} is required`);
+          throw new AppError(400, `Field '${field}' is required`);
         }
       }
+
       const currentDate = new Date();
-      const userBirthdate = new Date(userData.birth);
       const userAge = Math.floor(
-        (currentDate.getTime() - userBirthdate.getTime()) /
+        (currentDate.getTime() - userData.birth.getTime()) /
           (1000 * 60 * 60 * 24 * 365),
       );
       if (userAge < 18) {
         throw new AppError(400, 'User must be at least 18 years old');
       }
 
-      if (!validateCPF(userData.cpf)) {
+      const cpf = userData.cpf;
+      if (validateCPF(cpf) === false) {
         throw new AppError(400, 'Invalid CPF');
       }
-      const searchCPF = userData.cpf;
-      const existingCPF = await User.findOne({ searchCPF });
+      const existingCPF = await User.findOne({ cpf: userData.cpf });
       if (existingCPF) {
         throw new AppError(400, 'CPF already exists');
       }
