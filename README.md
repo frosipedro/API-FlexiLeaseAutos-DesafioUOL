@@ -23,7 +23,7 @@ A documentação completa da API Compacine está disponível através do Swagger
 Para acessar a documentação localmente, basta rodar o projeto e abrir o seguinte link em seu navegador:
  
 ```bash
-http://localhost:3333/api/v1/doc
+http://localhost:3000/api/v1/doc
 ```
  
 Isso permitirá que você explore todos os endpoints, parâmetros e exemplos de requisições diretamente em seu ambiente de desenvolvimento.
