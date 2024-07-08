@@ -34,16 +34,15 @@ export class ReserveController {
       await this.userMiddleware.getUserById(getUserData);
       getUserData = await this.userService.getUserById(req.body.id_user);
 
-      await this.reserveMiddleware.createReserve(
+      const reserveData = await this.reserveMiddleware.createReserve(
         req.body,
         getCarData,
         getUserData,
       );
 
-      const reserve = await this.reserveService.createReserve(req.body);
+      const reserve = await this.reserveService.createReserve(reserveData);
       res.status(201).json(reserve);
     } catch (error: any) {
-      console.log(error);
       res.status(error.code).json(AppErrorToJSON(error));
     }
   };
