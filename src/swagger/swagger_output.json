@@ -1,0 +1,557 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API FlexiLeaseAutos",
+    "description": "Documentação da API REST para o projeto de locação de carros."
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "tags": [
+    {
+      "name": "User",
+      "description": "Endpoints relacionados a usuários"
+    },
+    {
+      "name": "Authenticate",
+      "description": "Endpoints relacionados a autenticação de usuários"
+    },
+    {
+      "name": "Car",
+      "description": "Endpoints relacionados a carros"
+    },
+    {
+      "name": "Reserve",
+      "description": "Endpoints relacionados a reservas"
+    }
+  ],
+  "paths": {
+    "/api/v1/user/": {
+      "post": {
+        "tags": ["User"],
+        "description": "Rota para cadastro de usuário",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "John Doe"
+                },
+                "cpf": {
+                  "example": "123.456.789-00"
+                },
+                "birth": {
+                  "example": "01/23/1994"
+                },
+                "email": {
+                  "example": "johndoe@example.com"
+                },
+                "password": {
+                  "example": "teste123"
+                },
+                "cep": {
+                  "type": "string",
+                  "example": "12345678"
+                },
+                "qualified": {
+                  "example": "sim"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "description": "Rota para listar todos os usuários",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/user/:userId": {
+      "delete": {
+        "tags": ["User"],
+        "description": "Rota para deletar um usuário",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["User"],
+        "description": "Rota para atualizar um usuário",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "John Doe"
+                },
+                "cpf": {
+                  "example": "123.456.789-00"
+                },
+                "birth": {
+                  "example": "01/23/1994"
+                },
+                "email": {
+                  "example": "johndoe@example.com"
+                },
+                "password": {
+                  "example": "teste123"
+                },
+                "cep": {
+                  "type": "string",
+                  "example": "12345678"
+                },
+                "qualified": {
+                  "example": "sim"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "description": "Rota para listar um usuário pelo ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/authenticate/": {
+      "post": {
+        "tags": ["Authenticate"],
+        "description": "Rota para autenticação de usuário - receber o token",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "johndoe@example.com"
+                },
+                "password": {
+                  "example": "teste123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/car/": {
+      "post": {
+        "tags": ["Car"],
+        "description": "Rota para cadastro de carro",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "model": {
+                  "example": "BMW 320i"
+                },
+                "color": {
+                  "example": "black"
+                },
+                "year": {
+                  "type": "string",
+                  "example": "2021"
+                },
+                "value_per_day": {
+                  "type": "string",
+                  "example": "250"
+                },
+                "accessories": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "example": "Air Conditioner"
+                      }
+                    }
+                  }
+                },
+                "number_of_passengers": {
+                  "type": "string",
+                  "example": "5"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Car"],
+        "description": "Rota para listar todos os carros",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/car/:carId": {
+      "delete": {
+        "tags": ["Car"],
+        "description": "Rota para deletar um carro",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Car"],
+        "description": "Rota para atualizar um carro",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "model": {
+                  "example": "BMW 320i"
+                },
+                "color": {
+                  "example": "black"
+                },
+                "year": {
+                  "type": "string",
+                  "example": "2022"
+                },
+                "value_per_day": {
+                  "type": "string",
+                  "example": "300"
+                },
+                "accessories": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "example": "Air Conditioner"
+                      }
+                    }
+                  }
+                },
+                "number_of_passengers": {
+                  "type": "string",
+                  "example": "5"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Car"],
+        "description": "Rota para listar um carro pelo ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/car/:carId/accessories/:accessoriesId": {
+      "patch": {
+        "tags": ["Car"],
+        "description": "Rota para adicionar  ou atualizar acessórios a um carro",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "example": "Air Conditioner"
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "OK"
+                },
+                "400": {
+                  "description": "Bad Request"
+                },
+                "404": {
+                  "description": "Not Found"
+                },
+                "500": {
+                  "description": "Internal Server Error"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/reserve/": {
+      "post": {
+        "tags": ["Reserve"],
+        "description": "Rota para cadastro de reserva",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_user": {
+                  "example": "6666aomnfieng24j12n4"
+                },
+                "start_date": {
+                  "example": "01/23/2021"
+                },
+                "end_date": {
+                  "example": "01/25/2021"
+                },
+                "id_car": {
+                  "example": "1966ao35fggieng22j82n1"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Reserve"],
+        "description": "Rota para listar todas as reservas",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/reserve/:reserveId": {
+      "delete": {
+        "tags": ["Reserve"],
+        "description": "Rota para deletar uma reserva",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Reserve"],
+        "description": "Rota para atualizar uma reserva",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_user": {
+                  "example": "6666aomnfieng24j12n4"
+                },
+                "start_date": {
+                  "example": "07/16/2022"
+                },
+                "end_date": {
+                  "example": "07/20/2022"
+                },
+                "id_car": {
+                  "example": "1966ao35fggieng22j82n1"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Reserve"],
+        "description": "Rota para listar uma reserva pelo ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}
