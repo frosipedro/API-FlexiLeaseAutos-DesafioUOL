@@ -1,13 +1,11 @@
-import AppError from '../../utils/AppError';
-import Car from '../cars/car.model';
 import { CarMiddleware } from '../cars/car.middleware';
 import { CarService } from '../cars/car.service';
 import { ReserveService } from '../reserves/reserve.service';
 import { ReserveMiddleware } from '../reserves/reserve.middleware';
 import { Request, Response } from 'express';
-import User from '../users/user.model';
 import { UserMiddleware } from '../users/user.middleware';
 import { UserService } from '../users/user.service';
+import { AppErrorToJSON } from '../../utils/AppError';
 
 export class ReserveController {
   private carService: CarService;
@@ -28,16 +26,12 @@ export class ReserveController {
 
   public createReserve = async (req: Request, res: Response): Promise<void> => {
     try {
-      let getCarData = await this.carMiddleware.getCarById(req.body.id_car);
-      if (!getCarData) {
-        throw new AppError(404, 'Car not found');
-      }
+      let getCarData = req.body.id_car;
+      await this.carMiddleware.getCarById(getCarData);
       getCarData = await this.carService.getCarById(req.body.id_car);
 
-      let getUserData = await this.userMiddleware.getUserById(req.body.id_user);
-      if (!getUserData) {
-        throw new AppError(404, 'User not found');
-      }
+      let getUserData = req.body.id_user;
+      await this.userMiddleware.getUserById(getUserData);
       getUserData = await this.userService.getUserById(req.body.id_user);
 
       await this.reserveMiddleware.createReserve(
@@ -49,7 +43,8 @@ export class ReserveController {
       const reserve = await this.reserveService.createReserve(req.body);
       res.status(201).json(reserve);
     } catch (error: any) {
-      res.status(error.code).json({ error: error.message });
+      console.log(error);
+      res.status(error.code).json(AppErrorToJSON(error));
     }
   };
 
@@ -66,7 +61,7 @@ export class ReserveController {
       );
       res.status(200).json({ reserves });
     } catch (error: any) {
-      res.status(error.code || 400).json({ error: error.message });
+      res.status(error.code || 400).json(AppErrorToJSON(error));
     }
   };
 
@@ -82,20 +77,20 @@ export class ReserveController {
       );
       res.status(200).json({ reserve });
     } catch (error: any) {
-      res.status(error.code || 400).json({ error: error.message });
+      res.status(error.code || 400).json(AppErrorToJSON(error));
     }
   };
 
   public updateReserve = async (req: Request, res: Response): Promise<void> => {
     try {
-      const getCarData = await Car.findById(req.body.id_car);
-      if (!getCarData) {
-        throw new AppError(404, 'Car not found');
-      }
-      const getUserData = await User.findById(req.body.id_user);
-      if (!getUserData) {
-        throw new AppError(404, 'User not found');
-      }
+      let getCarData = req.body.id_car;
+      await this.carMiddleware.getCarById(getCarData);
+      getCarData = await this.carService.getCarById(req.body.id_car);
+
+      let getUserData = req.body.id_user;
+      await this.userMiddleware.getUserById(getUserData);
+      getUserData = await this.userService.getUserById(req.body.id_user);
+
       await this.reserveMiddleware.updateReserve(
         req.params.reserveId,
         req.body,
@@ -106,7 +101,7 @@ export class ReserveController {
       const reserve = await this.reserveService.createReserve(req.body);
       res.status(201).json(reserve);
     } catch (error: any) {
-      res.status(error.code).json({ error: error.message });
+      res.status(error.code).json(AppErrorToJSON(error));
     }
   };
 
@@ -117,7 +112,7 @@ export class ReserveController {
       await this.reserveService.deleteReserve(req.params.reserveId);
       res.status(204).json({ message: '' });
     } catch (error: any) {
-      res.status(error.code || 400).json({ error: error.message });
+      res.status(error.code || 400).json(AppErrorToJSON(error));
     }
   };
 }

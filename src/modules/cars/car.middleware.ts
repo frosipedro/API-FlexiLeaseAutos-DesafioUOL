@@ -14,7 +14,7 @@ export class CarMiddleware {
     ];
     for (const field of requiredFields) {
       if (!carData[field]) {
-        throw new AppError(400, `${field} is required`);
+        throw new AppError(400, `Field '${field}' is required`);
       }
     }
 
@@ -55,7 +55,7 @@ export class CarMiddleware {
     ];
     for (const field of requiredFields) {
       if (!carData[field]) {
-        throw new AppError(400, `${field} is required`);
+        throw new AppError(400, `Field '${field}' is required`);
       }
     }
 
@@ -80,7 +80,7 @@ export class CarMiddleware {
     }
   }
 
-  public async updateCarAcessory(
+  public async updateCarAccessory(
     carId: any,
     accessory: any,
     body: any,

@@ -87,7 +87,7 @@ export class CarService {
     }
   }
 
-  public async updateCarAcessory(
+  public async updateCarAccessory(
     carId: string,
     acessoryId: string,
   ): Promise<{ car: ICar | null }> {

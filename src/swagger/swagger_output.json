@@ -240,7 +240,7 @@
                   "type": "string",
                   "example": "250"
                 },
-                "acessories": {
+                "accessories": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -331,7 +331,7 @@
                   "type": "string",
                   "example": "300"
                 },
-                "acessories": {
+                "accessories": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -385,7 +385,7 @@
         }
       }
     },
-    "/api/v1/car/:carId/acessories/:acessoriesId": {
+    "/api/v1/car/:carId/accessories/:accessoriesId": {
       "patch": {
         "tags": ["Car"],
         "description": "Rota para adicionar  ou atualizar acessórios a um carro",

@@ -1,22 +1,9 @@
-import { MongoMemoryServer } from 'mongodb-memory-server';
+import supertest from 'supertest';
+import server from '../server';
 import mongoose from 'mongoose';
 
-let mongoServer: MongoMemoryServer;
-
-beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
-  await mongoose.connect(uri);
-});
+export const testServer = supertest(server);
 
 afterAll(async () => {
-  await mongoose.disconnect();
-  await mongoServer.stop();
-});
-
-beforeEach(async () => {
-  const collections = await mongoose.connection.db.collections();
-  for (let collection of collections) {
-    await collection.deleteMany({});
-  }
+  await mongoose.connection.close();
 });

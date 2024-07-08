@@ -27,6 +27,13 @@ const carSchema = new Schema<ICar>({
   number_of_passengers: { type: Number, required: true },
 });
 
+carSchema.set('toJSON', {
+  transform: (document: any, returnedObject: any) => {
+    delete returnedObject.__v;
+    return returnedObject;
+  },
+});
+
 const Car = model<ICar>('Car', carSchema);
 
 export default Car;

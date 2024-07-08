@@ -26,14 +26,17 @@ class AppError extends Error {
         return 'Internal Server Error';
     }
   }
-
-  public AppErrorToJSON(): { code: number; status: string; message: string } {
-    return {
-      code: this.code,
-      status: this.status,
-      message: this.message,
-    };
-  }
 }
 
+export function AppErrorToJSON(data: AppError): {
+  code: number;
+  status: string;
+  message: string;
+} {
+  return {
+    code: data.code,
+    status: data.status,
+    message: data.message,
+  };
+}
 export default AppError;

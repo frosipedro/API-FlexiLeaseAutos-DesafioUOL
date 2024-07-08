@@ -1,7 +1,6 @@
 import AppError from '../../utils/AppError';
 import Reserve from './reserve.model';
 import { IReserve } from './reserve.model';
-import { IReserveUserCreate } from './reserve.model';
 
 interface PaginatedReserves {
   reserves: IReserve[];

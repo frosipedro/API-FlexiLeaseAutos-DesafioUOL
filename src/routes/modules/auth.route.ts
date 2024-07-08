@@ -1,8 +1,8 @@
 import AppError from '../../utils/AppError';
-import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Router, Request, Response } from 'express';
 import User from '../../modules/users/user.model';
+import { AppErrorToJSON } from '../../utils/AppError';
 
 const router = Router();
 
@@ -11,16 +11,16 @@ router.post('/', async (req: Request, res: Response) => {
 
   if (!email || !password) {
     const error = new AppError(400, 'Email and password are required');
-    res.status(400).send(error.AppErrorToJSON);
+    res.status(400).send(AppErrorToJSON(error));
     return;
   }
 
   try {
     const user = await User.findOne({ email });
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user || user.password !== password) {
       const error = new AppError(400, 'Invalid email or password');
-      res.status(400).send(error.AppErrorToJSON());
+      res.status(400).send(AppErrorToJSON(error));
       return;
     }
 

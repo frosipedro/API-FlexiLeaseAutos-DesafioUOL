@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UserService } from '../users/user.service';
 import { UserMiddleware } from '../users/user.middleware';
+import { AppErrorToJSON } from '../../utils/AppError';
 
 export class UserController {
   private userService: UserService;
@@ -19,7 +20,7 @@ export class UserController {
       const user = await this.userService.createUser(formatedCEP);
       res.status(201).json({ user });
     } catch (error: any) {
-      res.status(error.code).json(error.AppErrorToJSON());
+      res.status(error.code).json(AppErrorToJSON(error));
     }
   };
 
@@ -36,7 +37,7 @@ export class UserController {
       );
       res.status(200).json({ users });
     } catch (error: any) {
-      res.status(error.code || 400).json(error.AppErrorToJSON());
+      res.status(error.code || 400).json(AppErrorToJSON(error));
     }
   };
 
@@ -47,7 +48,7 @@ export class UserController {
       await this.userService.deleteUser(req.params.userId);
       res.status(204).json({ message: '' });
     } catch (error: any) {
-      res.status(error.code || 400).json(error.AppErrorToJSON());
+      res.status(error.code || 400).json(AppErrorToJSON(error));
     }
   };
 
@@ -61,7 +62,7 @@ export class UserController {
       );
       res.status(200).json({ user });
     } catch (error: any) {
-      res.status(error.code || 400).json(error.AppErrorToJSON());
+      res.status(error.code || 400).json(AppErrorToJSON(error));
     }
   };
 
@@ -72,7 +73,7 @@ export class UserController {
       const user = await this.userService.getUserById(req.params.userId);
       res.status(200).json({ user });
     } catch (error: any) {
-      res.status(error.code || 400).json(error.AppErrorToJSON());
+      res.status(error.code || 400).json(AppErrorToJSON(error));
     }
   };
 }

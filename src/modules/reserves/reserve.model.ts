@@ -32,6 +32,13 @@ reserveSchema.index(
 
 reserveSchema.index({ id_user: 1, start_date: 1, end_date: 1 });
 
+reserveSchema.set('toJSON', {
+  transform: (document: any, returnedObject: any) => {
+    delete returnedObject.__v;
+    return returnedObject;
+  },
+});
+
 const Reserve = model<IReserve>('Reserve', reserveSchema);
 
 export default Reserve;

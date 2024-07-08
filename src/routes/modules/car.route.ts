@@ -10,8 +10,8 @@ carRoutes.delete('/:carId', carController.deleteCar);
 carRoutes.put('/:carId', carController.updateCar);
 carRoutes.get('/:carId', carController.getCarById);
 carRoutes.patch(
-  '/:carId/acessories/:acessorieId',
-  carController.updateCarAcessory,
+  '/:carId/accessories/:accessorieId',
+  carController.updateCarAccessory,
 );
 
 export default carRoutes;
