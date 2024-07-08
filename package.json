@@ -2,11 +2,11 @@
   "name": "api-flexileaseautos-desafiouol",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.ts",
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "start": "node ./src/app.js",
+    "start": "ts-node ./src/app.ts",
     "dev": "nodemon ./src/app.ts",
     "test": "jest --coverage --detectOpenHandles --forceExit",
     "swagger-autogen": "ts-node ./src/swagger/swagger.ts"
